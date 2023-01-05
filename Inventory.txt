@@ -1,0 +1,23 @@
+[Meat]
+
+[Vegetables]
+Sayote
+
+[Sauces]
+Barbeque Marinade
+Oyster Sauce
+Sesame Oil
+Soy Sauce
+Worcestershire Sauce
+
+[Seasonings, Spices]
+Salt
+Pepper
+Garlic
+Onion
+Ginger
+Chicken Cube
+
+[Dairy, Poultry]
+Fresh Milk
+Eggs
