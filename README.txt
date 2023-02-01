@@ -1,3 +1,8 @@
+20230201
+Project Version 0.03
+*made using "_Recipes.txt" to generate list of recipes obsolete by using os.scandir
+*improved the edit_list function by passing if the user inputs "" to avoid adding blanks, removing the entire list, or replacing an item on the list with a blank
+
 20230116
 Project Version 0.02
 *incorporated walrus operators and list comprehensions to shorten code

@@ -45,7 +45,11 @@ def edit_list(dummy_recipe):                          # function to edit a list 
             int_choice = int(input("Enter the number of your choice: "))
         if int_choice == 1:         # add items
             while (add_ingredient := input("One at a time, enter the items to add (or type \"Done\" to go back): ")).lower() != "done":
-                dummy_recipe.append(add_ingredient)
+                # to prevent inputs of "" from adding blank entries
+                if len(add_ingredient) == 0:
+                    pass
+                else:
+                    dummy_recipe.append(add_ingredient)
             print("------------------\nUpdated list of items:")      # update the user on the list of ingredients
             display_list(dummy_recipe)
         elif int_choice == 2:       #remove items
@@ -53,13 +57,17 @@ def edit_list(dummy_recipe):                          # function to edit a list 
                 print("There are no more items on the list.")   # if there are no ingredients in the recipe, user shouldn't be able to remove an ingredient
             else:
                 while (remove_ingredient := input("Enter the item to remove (or type \"Done\" to go back): ")).lower() != "done":
-                    dummy_recipe = [i for i in dummy_recipe if i.lower().find(remove_ingredient) == -1]  # if i.lower().find(remove_ingredient) = -1 then we don't want to remove the ingredient
-                    if len(dummy_recipe) == 0:
-                        print("There are no more items on the list.")
-                        break
+                    # to prevent inputs of "" from removing all entries at once
+                    if len(remove_ingredient) == 0:
+                        pass
                     else:
-                        print("------------------\nUpdated list of items:")
-                        display_list(dummy_recipe)
+                        dummy_recipe = [i for i in dummy_recipe if i.lower().find(remove_ingredient) == -1]  # if i.lower().find(remove_ingredient) = -1 then we don't want to remove the ingredient
+                        if len(dummy_recipe) == 0:
+                            print("There are no more items on the list.")
+                            break
+                        else:
+                            print("------------------\nUpdated list of items:")
+                            display_list(dummy_recipe)
         elif int_choice == 3:       #replace an ingredient with another ingredient
             if len(dummy_recipe) == 0:
                 print("There are no more items on the list.")   # if there are no ingredients in the recipe, user shouldn't be able to place an ingredient
@@ -74,7 +82,10 @@ def edit_list(dummy_recipe):                          # function to edit a list 
                     if edit_index == len(dummy_recipe):
                         break
                     else:
-                        dummy_recipe[edit_index] = input("Enter the item to replace " + dummy_recipe[edit_index] + ": ")
+                        edit_ingredient = ""
+                        while len(edit_ingredient) == 0:
+                            edit_ingredient = input("Enter the item to replace " + dummy_recipe[edit_index] + ": ")
+                        dummy_recipe[edit_index] = edit_ingredient
         else:
             break
     return dummy_recipe
@@ -82,10 +93,16 @@ def edit_list(dummy_recipe):                          # function to edit a list 
 #MAIN
 dummy_recipe = []                                       # used to generate an instance of a recipe
 grocery_list = []                                       # build the grocery list from scratch, append one recipe at a time
-recipes_list = []                                       # used to contain list of recipes from text file
+recipes_list = []                                       # used to contain list of recipes
 storage_list = []                                       # used to contain list of ingredients in inventory from text file
-# import list of recipes and list of ingredients in inventory
-file_as_list("Recipes\\_Recipe List.txt", recipes_list)
+
+# import list of recipes
+# with this method, there is no need for a separate text file with the list of recipes
+recipes_folder = os.scandir("Recipes")
+for recipe in recipes_folder:
+    if recipe.is_file():
+        recipes_list.append(recipe.name[slice(0,-4)])
+# import list of ingredients in inventory
 file_as_list("Inventory.txt", storage_list)
 # add recipes to the grocery list
 while True:
@@ -130,9 +147,3 @@ if len(grocery_list) > 0:
             file.write(i + "\n")
 else:
     print("There's no grocery list to export.")
-
-
-
-
-
-
