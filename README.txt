@@ -1,4 +1,15 @@
 20230216
+GUI Version 0.03
+* implemented use of multiple lists (2 for now) that share one listbox
+* when switching between lists:
+	* data within lists are preserved 
+	* the listbox refreshes to reflect the current list
+* note: 
+	list_A = []
+	list_B = []
+	list_A = list_B 
+		will give list_A the memory address of list_B; list_A.append is now the same as list_B.append
+	=> this allows the use of a middle-man list when switching between lists
 GUI Version 0.02
 * implemented O(1) method to update the internal list
 GUI Version 0.01
