@@ -1,4 +1,6 @@
 20230216
+GUI Version 0.02
+* implemented O(1) method to update the internal list
 GUI Version 0.01
 * started with an entrybox, listbox, and "Edit," "Add," and "Remove" buttons to manipulate listbox 
 * O(n) method to update the internal list
