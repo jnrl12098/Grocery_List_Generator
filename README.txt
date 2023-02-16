@@ -1,4 +1,22 @@
 20230216
+GUI Version 0.04
+* added a list for custom recipes
+	* this will also store any recipe the user chooses in a future search function
+* for now, the purpose of the mode variable is to prevent unnecessarily refreshing the listbox if the mode is the same
+* for now, the lists are independent of each other, but these relationships are kept in mind:
+	* ideally, the grocery list should automatically change if changes to the inventory list affect it
+	* if a recipe is added to the grocery list, the ingredients are first filtered
+		* i.e. if the ingredient is present in the inventory list, it will not be added to the grocery list
+* boilerplate for the switchToNthList function could allow for easier implementation of future lists
+	* e.g. "must-haves" list
+* design choice: it is the user's responsibility to reflect changes in the inventory list to the grocery list
+		if, for example, a recipe was introduced to the grocery list,
+         the ingredients are first filtered by checking with the inventory list before going to the grocery list;
+        but if the inventory list has changed afterwards e.g. an ingredient was removed,
+         this ingredient which was initially filtered off from the recipe 
+		  will not be automatically added to the grocery list;
+        this is the user's responsibility now
+		likewise, if an item was added to the inventory list, this item is not automatically removed from the grocery list
 GUI Version 0.03
 * implemented use of multiple lists (2 for now) that share one listbox
 * when switching between lists:

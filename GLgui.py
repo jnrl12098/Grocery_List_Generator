@@ -2,12 +2,31 @@ from tkinter import *
 
 mainWindow = Tk()
 
-mode = 1
+mode = 4
+
+"""
+modes:
+1 - Edit Grocery List 
+2 - Search Recipe
+3 - Edit Recipe
+4 - Edit Inventory List
+"""
 
 midList = []        # this list will act as the middle-man between the listbox and the other lists
 
 groceryList = ["GL 1", "GL 2", "GL 3"]   # build the grocery list from scratch, append one recipe at a time
-storageList = ["IL 1", "IL 2", "IL 3"]   # used to contain list of ingredients in inventory from text file
+inventoryList = ["IL 1", "IL 2", "IL 3"]   # used to contain list of ingredients in inventory from text file
+dummyRecipe = ["Ing 1", "Ing 2", "Ing 3"]
+recipeName = ""
+
+# TODO if changes to the inventory list was made, the user must be prompted to save before fully exiting the app
+# TODO during the Search Recipe Mode, user should be prompted before confirming choices
+    # choices: "Choose Recipe" "Add Recipe to Grocery List"
+# TODO export function, specific to the mode
+    # M1: "Export Grocery List"
+    # M2: disabled
+    # M3: "Export Recipe" - useful if the user likes to save these changes or make a new recipe
+    # M4: "Update Inventory"
 
 # FUNCTIONS
 def editItem():
@@ -44,42 +63,37 @@ def delItem():
         pass
 
 def switchToGL():
-    # print("You pressed the Edit Grocery List Button")
     global mode, midList, groceryList
     if mode == 1:
-        print("You're still in Grocery List Mode")
         pass
     else:
-        prevMode = mode
         mode = 1
-        print("Switched to Grocery List Mode", end = " ")
-        if prevMode == 4:
-            # TODO update the grocery after the inventory was changed
-            # keep an internal unfiltered grocery list; only the filtered list is shown and exported
-            print("from Inventory Mode")
-            midList = groceryList
-            refreshListbox()
+        midList = groceryList
+        refreshListbox()
+        modeLabel.config(text = "Mode: Edit Grocery List")
+        listLabel.config(text = "Grocery List")
 
 def switchToIL():
-    # print("You pressed the Edit Inventory List Button")
-    global mode, midList, storageList
+    global mode, midList, inventoryList
     if mode == 4:
-        print("You're still in Inventory List Mode")
         pass
     else:
-        prevMode = mode
         mode = 4
-        print("Switched to Inventory List Mode", end = " ")
-        if prevMode == 1:
-            print("from Grocery List Mode")
-            midList = storageList
-            refreshListbox()
+        midList = inventoryList
+        refreshListbox()
+        modeLabel.config(text = "Mode: Edit Inventory List")
+        listLabel.config(text = "Inventory List")
 
-def updateList():
-    global midList
-    print("---------------")
-    for i in midList:
-        print(i)
+def switchToRecipe():
+    global mode, midList, dummyRecipe, recipeName
+    if mode == 3:
+        pass
+    else:
+        mode = 3
+        midList = dummyRecipe
+        refreshListbox()
+        modeLabel.config(text = "Mode: Edit Recipe")
+        listLabel.config(text = "Recipe: " + recipeName)
 
 def refreshListbox():
     global midList
@@ -89,13 +103,13 @@ def refreshListbox():
 
 # WIDGETS
 # displays the current mode
-modeLabel = Label(mainWindow, width = 30, text = "Mode: Label", justify = "left")
+modeLabel = Label(mainWindow, width = 30, justify = "left")
 modeLabel.grid(row = 0, column = 0)
 
 entrybox = Entry(mainWindow, width = 30)
 entrybox.grid(row = 1, column = 0)
 
-listLabel = Label(mainWindow, width = 30, text = "List Label", justify = "left")
+listLabel = Label(mainWindow, width = 30, justify = "left")
 listLabel.grid(row = 2, column = 0)
 
 listbox = Listbox(mainWindow, width = 30)
@@ -119,8 +133,14 @@ editGL_button.grid(row = 7, column = 1)
 editIL_button = Button(mainWindow, text = "Edit Inventory List", command = switchToIL)
 editIL_button.grid(row = 8, column = 1)
 
-# initialize midList as the groceryList
-midList = groceryList
+editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToRecipe)
+editRecipe_button.grid(row = 9, column = 1)
+
+# initialize midList as the inventoryList to minimize re-edits to the inventory
+midList = inventoryList
 refreshListbox()
+modeLabel.config(text = "Mode: Edit Inventory List")
+listLabel.config(text = "Inventory List")
+recipeName = "Custom Recipe"
 
 mainWindow.mainloop()
