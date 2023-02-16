@@ -17,6 +17,8 @@ GUI Version 0.04
 		  will not be automatically added to the grocery list;
         this is the user's responsibility now
 		likewise, if an item was added to the inventory list, this item is not automatically removed from the grocery list
+	* this is more flexible for the user; say they still have Salt in their inventory but are running out, 
+		they could still choose to put Salt in their grocery list without the program messing with that
 GUI Version 0.03
 * implemented use of multiple lists (2 for now) that share one listbox
 * when switching between lists:
