@@ -43,8 +43,20 @@ def editItem():
     else:
         pass
 
+def insItem():
+    # only one item should be selected and entrybox is not empty
+    global midList
+    if (len(listbox.curselection()) == 1) & (len(entrybox.get()) != 0):
+        current = listbox.curselection()    # note this is a tuple containing indices
+        midList.insert(current[0], entrybox.get())
+        listbox.insert(current, entrybox.get())
+        listbox.select_clear(0, current)
+        entrybox.delete(0, END) 
+    else:
+        pass
+
 def addItem():
-    # add the current text in the entrybox to the bottom of the list
+    # add the current text in the entrybox to the bottom of the list and the listbox
     global midList
     if len(entrybox.get()) != 0:
         midList.append(entrybox.get())
@@ -54,13 +66,19 @@ def addItem():
         pass
 
 def delItem():    
-    # removes the selected item from listbox
+    # removes the selected item from the list and the listbox
     global midList
     if len(listbox.curselection()) == 1:
         midList.remove(listbox.get(listbox.curselection()))
         listbox.delete(listbox.curselection())
     else:
         pass
+
+def refreshListbox():
+    global midList
+    listbox.delete(0, END)
+    for i in range(len(midList)):
+        listbox.insert(i, midList[i])
 
 def switchToGL():
     global mode, midList, groceryList
@@ -95,12 +113,6 @@ def switchToRecipe():
         modeLabel.config(text = "Mode: Edit Recipe")
         listLabel.config(text = "Recipe: " + recipeName)
 
-def refreshListbox():
-    global midList
-    listbox.delete(0, END)
-    for i in range(len(midList)):
-        listbox.insert(i, midList[i])
-
 # WIDGETS
 # displays the current mode
 modeLabel = Label(mainWindow, width = 30, justify = "left")
@@ -115,28 +127,29 @@ listLabel.grid(row = 2, column = 0)
 listbox = Listbox(mainWindow, width = 30)
 listbox.grid(row = 3, column = 0, rowspan = 9)
 
-# edits the selected item in the listbox into the text on the entrybox
 editItem_button = Button(mainWindow, text = "Edit Item", command = editItem)
 editItem_button.grid(row = 3, column = 1)
 
-# adds the current text on the entrybox to the bottom of the list
-addItem_button = Button(mainWindow, text = "Add Item", command = addItem)
-addItem_button.grid(row = 4, column = 1)
+insItem_button = Button(mainWindow, text = "Insert Item", command = insItem)
+insItem_button.grid(row = 4, column = 1)
 
-# removes the selected item/s from the listbox
+addItem_button = Button(mainWindow, text = "Add Item", command = addItem)
+addItem_button.grid(row = 5, column = 1)
+
 delItem_button = Button(mainWindow, text = "Remove Item", command = delItem)
-delItem_button.grid(row = 5, column = 1)
+delItem_button.grid(row = 6, column = 1)
 
 editGL_button = Button(mainWindow, text = "Edit Grocery List", command = switchToGL)
-editGL_button.grid(row = 7, column = 1)
+editGL_button.grid(row = 8, column = 1)
 
 editIL_button = Button(mainWindow, text = "Edit Inventory List", command = switchToIL)
-editIL_button.grid(row = 8, column = 1)
+editIL_button.grid(row = 9, column = 1)
 
 editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToRecipe)
-editRecipe_button.grid(row = 9, column = 1)
+editRecipe_button.grid(row = 10, column = 1)
 
 # initialize midList as the inventoryList to minimize re-edits to the inventory
+mode = 4
 midList = inventoryList
 refreshListbox()
 modeLabel.config(text = "Mode: Edit Inventory List")

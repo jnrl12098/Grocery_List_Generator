@@ -1,3 +1,8 @@
+20230223
+GUI Version 0.05
+* implemented an "Insert" Button which felt necessary to maintain the intended structure of the Inventory List
+	* i.e, having categories such as [MEAT], [VEGETABLES], etc. 
+
 20230216
 GUI Version 0.04
 * added a list for custom recipes
@@ -6,7 +11,7 @@ GUI Version 0.04
 * for now, the lists are independent of each other, but these relationships are kept in mind:
 	* ideally, the grocery list should automatically change if changes to the inventory list affect it
 	* if a recipe is added to the grocery list, the ingredients are first filtered
-		* i.e. if the ingredient is present in the inventory list, it will not be added to the grocery list
+		* i.e., if the ingredient is present in the inventory list, it will not be added to the grocery list
 * boilerplate for the switchToNthList function could allow for easier implementation of future lists
 	* e.g. "must-haves" list
 * design choice: it is the user's responsibility to reflect changes in the inventory list to the grocery list
