@@ -1,4 +1,11 @@
 20230223
+GUI Version 0.06
+* implemented "Search for a Recipe" function
+* implemented "Export" function for grocery lists, custom recipes, inventory lists
+	* included date of day for naming grocery lists
+	* allowed the user to input names for customized recipes
+* implemented mouse events to configure context buttons depending on the associated mode
+* disabled Edit, Insert, Add, and Remove buttons for mode 2 (Search for a Recipe)
 GUI Version 0.05
 * implemented an "Insert" Button which felt necessary to maintain the intended structure of the Inventory List
 	* i.e, having categories such as [MEAT], [VEGETABLES], etc. 
