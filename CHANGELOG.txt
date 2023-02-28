@@ -1,3 +1,10 @@
+20230228
+GUI Version 0.07
+* implemented a message box that will appear if the user changed the state of the inventory list and
+  they haven't saved these changes yet
+	* it will not appear if the user used the edit tools but the end result is the same state as it was before
+* cleaned up some of the comments such as the TODOs
+
 20230223
 GUI Version 0.06
 * implemented "Search for a Recipe" function

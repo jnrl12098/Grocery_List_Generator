@@ -1,17 +1,10 @@
 from tkinter import *
+from tkinter import messagebox
 import os, time
 
 mainWindow = Tk()
 
-mode = 4
-
-"""
-modes:
-1 - Edit Grocery List 
-2 - Search Recipe
-3 - Edit Recipe
-4 - Edit Inventory List
-"""
+mode = 0
 
 midList = []        # this list will act as the middle-man between the listbox and the other lists
 
@@ -23,15 +16,6 @@ searchListMode = 1
 displayedRecipe = []
 narrowedList = []
 recipesList = []
-
-# TODO if changes to the inventory list was made, the user must be prompted to save before fully exiting the app
-# TODO during the Search Recipe Mode, user should be prompted before confirming choices
-    # choices: "Choose Recipe" "Add Recipe to Grocery List"
-# TODO export function, specific to the mode
-    # M1: "Export Grocery List"
-    # M2: disabled
-    # M3: "Export Recipe" - useful if the user likes to save these changes or make a new recipe
-    # M4: "Update Inventory"
 
 # FUNCTIONS
 # place the contents of a text file into a list
@@ -279,6 +263,34 @@ def exportList():
     else:
         pass
 
+def onClose():
+    global inventoryList
+    oldInventoryList = []
+    areDifferent = False
+    # side effect: if the user has already saved right before exiting, the two lists are automatically the same
+    fileAsList("Inventory.txt", oldInventoryList) 
+    # compare oldInventoryList and inventoryList; consider unchanged if and only if: same size, same order, same items
+    if len(inventoryList) == len(oldInventoryList):
+        for i in range(len(inventoryList)):
+            if inventoryList[i] != oldInventoryList[i]:
+                areDifferent = True
+                break
+    else:
+        areDifferent = True
+    
+    if areDifferent == True:
+        response = messagebox.askyesno("Warning!", "You have made changes to the Inventory List.\nDo you want to save these changes before exiting?")
+        if response:
+            fileName = "Inventory.txt"
+            with open(fileName, "w") as file:
+                for i in inventoryList:
+                    file.write(i + "\n")
+            messagebox.showinfo("File Saved", "The changes have been saved.")
+            mainWindow.destroy()
+        else:
+            mainWindow.destroy()
+    else:
+        mainWindow.destroy()   
 
 # WIDGETS
 # displays the current mode
@@ -291,8 +303,8 @@ entrybox.grid(row = 1, column = 0)
 listLabel = Label(mainWindow, width = 30, justify = "left")
 listLabel.grid(row = 2, column = 0)
 
-listbox = Listbox(mainWindow, width = 30)
-listbox.grid(row = 3, column = 0, rowspan = 10)
+listbox = Listbox(mainWindow, width = 30, height = 20)
+listbox.grid(row = 3, column = 0, rowspan = 20)
 
 editItem_button = Button(mainWindow, text = "Edit Item", command = editItem)
 editItem_button.grid(row = 3, column = 1)
@@ -340,6 +352,8 @@ midList = inventoryList
 refreshListbox()
 modeLabel.config(text = "Mode: Edit Inventory List")
 listLabel.config(text = "Inventory List")
-recipeName = "Custom Recipe"
+recipeName = "Custom Recipe" 
+
+mainWindow.protocol("WM_DELETE_WINDOW", onClose)
 
 mainWindow.mainloop()
