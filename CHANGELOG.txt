@@ -1,3 +1,29 @@
+20230302
+GUI Version 0.08
+* implemented a "Clear Selection" function and button
+	* wanted to clear selection by clicking on any whitespace on the listbox but this method was simpler
+* changed the insItem function
+	* before: the inserted item appeared above the current selected item, which felt less intuitive
+	* now: the inserted item appears below the current selected item and becomes the new selected item
+		* if the current selected item is found at the bottom of the list, .append() is used (to achieve O(1))
+		  else, .insert() is used (which achieves O(n))
+* improved the delItem function
+	* before: had issues with duplicates (e.g. empty lines) because it always removes the first instance of the item
+	* now: the function now removes the item using the specified index, which is more accurate
+		* this now allows empty lines as input
+* implemented a few keyboard shortcuts
+	* on Main Window:
+		* Escape:			clear current listbox selection
+	* on Entrybox:
+		* Enter:			if no item is selected, add item; else, insert item
+		* Ctrl + Enter: 	edit the selected item
+		* Ctrl + BackSpace:	clear the entire entrybox
+	* on Listbox:
+		* BackSpace:		delete the selected item, then select the item before it
+		* Delete:			delete the selected item, then select the item after it
+		* Ctrl + Enter:		copy the selected item to the entrybox 
+			* useful for editing items; just remember to use Ctrl + Enter again to finalize editing the item
+
 20230228
 GUI Version 0.07
 * implemented a message box that will appear if the user changed the state of the inventory list and
