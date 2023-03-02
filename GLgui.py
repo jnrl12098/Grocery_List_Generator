@@ -33,7 +33,7 @@ def editItem():
     if mode == 2:
         pass
     else:
-        if (len(listbox.curselection()) == 1) & (len(entrybox.get()) != 0):
+        if (len(listbox.curselection()) == 1):
             current = listbox.curselection()    # note this is a tuple containing indices
             midList.remove(listbox.get(current))
             midList.insert(current[0], entrybox.get())
@@ -50,11 +50,15 @@ def insItem():
     if mode == 2:
         pass
     else:
-        if (len(listbox.curselection()) == 1) & (len(entrybox.get()) != 0):
-            current = listbox.curselection()    # note this is a tuple containing indices
-            midList.insert(current[0], entrybox.get())
-            listbox.insert(current, entrybox.get())
-            listbox.select_clear(0, current)
+        if (len(listbox.curselection()) == 1):
+            belowCurselection = listbox.curselection()[0] + 1    
+            if belowCurselection == listbox.size():
+                midList.append(entrybox.get())
+            else:
+                midList.insert(belowCurselection, entrybox.get())
+            listbox.insert(belowCurselection, entrybox.get())
+            listbox.selection_clear(belowCurselection - 1)
+            listbox.select_set(belowCurselection)
             entrybox.delete(0, END) 
         else:
             pass
@@ -65,12 +69,9 @@ def addItem():
     if mode == 2:
         pass
     else:
-        if len(entrybox.get()) != 0:
-            midList.append(entrybox.get())
-            listbox.insert(END, entrybox.get())
-            entrybox.delete(0, END)
-        else:
-            pass
+        midList.append(entrybox.get())
+        listbox.insert(END, entrybox.get())
+        entrybox.delete(0, END)
 
 def delItem():    
     # removes the selected item from the list and the listbox
@@ -79,7 +80,7 @@ def delItem():
         pass
     else:
         if len(listbox.curselection()) == 1:
-            midList.remove(listbox.get(listbox.curselection()))
+            midList.pop(listbox.curselection()[0])
             listbox.delete(listbox.curselection())
         else:
             pass
@@ -88,7 +89,40 @@ def refreshListbox():
     global midList
     listbox.delete(0, END)
     for i in range(len(midList)):
-        listbox.insert(i, midList[i])
+        listbox.insert(i, midList[i]) 
+
+def backspaceListbox(event):
+    if len(listbox.curselection()) == 0:
+        pass
+    else:
+        current = listbox.curselection()[0]
+        delItem()
+        if current == 0:
+            listbox.select_set(0)
+        else:
+            listbox.select_set(current - 1)
+
+def deleteListbox(event):
+    if len(listbox.curselection()) == 0:
+        pass
+    else:
+        current = listbox.curselection()[0]
+        delItem()
+        if current == listbox.size():
+            listbox.select_set(END)
+        else:
+            listbox.select_set(current)
+
+def clearListboxSelection():
+    if len(listbox.curselection()) == 1: 
+        listbox.select_clear(listbox.curselection())
+    else:
+        pass
+
+def bringToEntrybox(event):
+    entrybox.delete(0, END)
+    entrybox.insert(0, listbox.get(listbox.curselection()))
+    entrybox.focus_set()
 
 # switch to Grocery List (GL) mode
 def switchToGL():
@@ -290,7 +324,7 @@ def onClose():
         else:
             mainWindow.destroy()
     else:
-        mainWindow.destroy()   
+        mainWindow.destroy()
 
 # WIDGETS
 # displays the current mode
@@ -319,22 +353,34 @@ delItem_button = Button(mainWindow, text = "Remove Item", command = delItem)
 delItem_button.grid(row = 6, column = 1)
 
 editGL_button = Button(mainWindow, text = "Edit Grocery List", command = switchToGL)
-editGL_button.grid(row = 8, column = 1)
+editGL_button.grid(row = 9, column = 1)
 
 editIL_button = Button(mainWindow, text = "Edit Inventory List", command = switchToIL)
-editIL_button.grid(row = 9, column = 1)
+editIL_button.grid(row = 10, column = 1)
 
 editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToRecipe)
-editRecipe_button.grid(row = 10, column = 1)
+editRecipe_button.grid(row = 11, column = 1)
 
 contextButton = Button(mainWindow, text = "Search For A Recipe", command = switchToSearch)
 contextButton.grid(row = 1, column = 1)
 
 exportButton = Button(mainWindow, text = "Update Inventory List", command = exportList)
-exportButton.grid(row = 12, column = 1)
+exportButton.grid(row = 13, column = 1)
 
+clearSelectionButton = Button(mainWindow, text = "Clear Selection", command = clearListboxSelection)
+clearSelectionButton.grid(row = 7, column = 1)
+
+# MOUSE AND KEYBOARD BINDS
 entrybox.bind("<Button-1>", contextM2Entry)
 listbox.bind("<Button-1>", contextM2List)
+
+entrybox.bind("<Return>", lambda event: addItem() if (len(listbox.curselection()) == 0) else insItem())
+entrybox.bind("<Control-Return>", lambda event: editItem())
+entrybox.bind("<Control-BackSpace>", lambda event: entrybox.delete(0, END))
+listbox.bind("<BackSpace>", backspaceListbox)
+listbox.bind("<Delete>", deleteListbox)
+listbox.bind("<Control-Return>", bringToEntrybox)
+mainWindow.bind("<Escape>", lambda event: clearListboxSelection())
 
 # MAIN FUNCTION
 # initialize whole list of available pre-built recipes
