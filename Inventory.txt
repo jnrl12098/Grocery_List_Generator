@@ -1,7 +1,18 @@
 [Meat]
+Chicken Drumsticks
+Boneless Bangus
+Tuna Belly
+Matambaka
+Pork Ginisa Cut
+Tangigue
 
 [Vegetables]
-Sayote
+Cabbage
+Carrots
+Tomatoes
+Spring Onion
+Chili Leaves
+Karlang
 
 [Sauces]
 Barbeque Marinade
@@ -9,15 +20,32 @@ Oyster Sauce
 Sesame Oil
 Soy Sauce
 Worcestershire Sauce
+Vinegar
+Sweet Soy Sauce
+Filipino-style Soy Sauce
+Yakisoba Sauce
+Chili Oil
+Chili Bean Sauce
+Fish Sauce
+Mirin
+Cooking Sake
+Hondashi
 
 [Seasonings, Spices]
 Salt
-Pepper
+Black Pepper (Fine)
+Black Pepper (Coarse)
+Chili Powder
 Garlic
-Onion
+Red Onion
 Ginger
-Chicken Cube
+MAGGI Magic Sarap
+KNORR Chicken Cube
+KNORR Pork Cube
 
 [Dairy, Poultry]
 Fresh Milk
 Eggs
+
+[FRUITS]
+Bananas
