@@ -1,3 +1,17 @@
+20230303
+GUI Version 0.09
+* refactored editRecipe and addRecipeToGL to use switchToEditRecipe and switchToGroceryList respectively 
+  to decrease verbosity
+* changed the following to become easier to understand:
+	switchToGL to switchToGroceryList
+	switchToIL to switchToInventoryList 
+	onClose to checkInventoryListOnClose
+* changed searchWord to entrybox.get() in filterSearch's listlabel to become more accurate
+* changed contextM2List conditions to consider if narrowedList was empty before configuring the contextButton
+	* if the narrowedList was empty, then there is no need to configure the contextButton to display ingredients
+* removed the (len(displayedRecipe) != 0) condition on displayRecipe since it prevented the user from searching for another recipe after having a previous recipe displayed
+* removed displayedRecipe.clear() in filterSearch to avoid unnecessarily clearing the list while searching for a recipe
+
 20230302
 GUI Version 0.08
 * implemented a "Clear Selection" function and button

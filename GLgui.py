@@ -5,9 +5,7 @@ import os, time
 mainWindow = Tk()
 
 mode = 0
-
 midList = []        # this list will act as the middle-man between the listbox and the other lists
-
 groceryList = []   # build the grocery list from scratch, append one recipe at a time
 inventoryList = []   # used to contain list of ingredients in inventory from text file
 dummyRecipe = []
@@ -125,7 +123,7 @@ def bringToEntrybox(event):
     entrybox.focus_set()
 
 # switch to Grocery List (GL) mode
-def switchToGL():
+def switchToGroceryList():
     global mode, midList, groceryList
     if mode == 1:
         pass
@@ -141,7 +139,7 @@ def switchToGL():
         exportButton.config(text = "Export Grocery List")
 
 # switch to Inventory List (IL) mode
-def switchToIL():
+def switchToInventoryList():
     global mode, midList, inventoryList
     if mode == 4:
         pass
@@ -157,7 +155,7 @@ def switchToIL():
         exportButton.config(text = "Update Inventory List")
 
 # switch to Edit (Current) Recipe mode
-def switchToRecipe():
+def switchToEditRecipe():
     global mode, midList, dummyRecipe, recipeName
     if mode == 3:
         pass
@@ -203,28 +201,27 @@ def filterSearch():
         narrowedList = [i for i in recipesList if i.lower().find(searchWord) != -1]
         midList = narrowedList
         refreshListbox()
-        listLabel.config(text = "Search Results for \"" + searchWord + "\"")
+        listLabel.config(text = "Search Results for \"" + entrybox.get() + "\"")
         searchListMode = 1
-        displayedRecipe.clear()
 
 def contextM2List(event):
-    global mode, searchListMode
+    global mode, searchListMode, narrowedList
     if mode == 2:
-        if searchListMode == 1:
+        if searchListMode == 1 and len(narrowedList) != 0:
             contextButton.config(text = "Display Ingredients", command = displayRecipe)
         elif searchListMode == 2:
             contextButton.config(text = "Edit This Recipe", command = editRecipe)
         else: # likely searchListMode = 0 and there are no valid results
             contextButton.config(text = "Filter Search")
     elif mode == 3:
-        contextButton.config(text = "Recipe => GL", command = addRecipeToGL)
+        contextButton.config(text = "Recipe => GL", command = addRecipeToGroceryList)
         # note, for now this will not let the user search for a recipe during edit reecipe mode
     else:
         pass
 
 def displayRecipe():
     global recipeName, midList, searchListMode, displayedRecipe
-    if (len(listbox.curselection()) == 0) or (len(displayedRecipe) != 0) :
+    if (len(listbox.curselection()) == 0):
         pass
     else:
         recipeName = listbox.get(listbox.curselection())
@@ -240,32 +237,17 @@ def editRecipe():
     # transfer contents of displayedRecipe to dummyRecipe
     dummyRecipe.clear()
     dummyRecipe = [i for i in displayedRecipe]
-    # reset the Context Button
-    contextButton.configure(text = "Search For A Recipe", command = switchToSearch)
-    # switch to Edit Recipe mode
-    mode = 3
-    midList = dummyRecipe
-    refreshListbox()
-    modeLabel.config(text = "Mode: Edit Recipe")
-    listLabel.config(text = "Recipe: " + recipeName)
-    exportButton.config(text = "Save this Recipe")
+    switchToEditRecipe()
+    contextButton.config(text = "Recipe => GL", command = addRecipeToGroceryList)
     entrybox.delete(0, END)
 
-def addRecipeToGL():
+def addRecipeToGroceryList():
     global mode, midList, dummyRecipe, groceryList, inventoryList
     # transfer contents of dummyRecipe to groceryList but filtered from inventoryList and current groceryList
     for i in dummyRecipe:
         if (i not in groceryList) and (i not in inventoryList):
             groceryList.append(i)
-    # reset the Context Button
-    contextButton.configure(text = "Search For A Recipe", command = switchToSearch)
-    # switch to Edit Grocery List Mode
-    mode = 1
-    midList = groceryList
-    refreshListbox()
-    modeLabel.config(text = "Mode: Edit Grocery List")
-    listLabel.config(text = "Grocery List")
-    exportButton.config(text = "Export Grocery List")
+    switchToGroceryList()
     entrybox.delete(0, END)
 
 def exportList():
@@ -297,7 +279,7 @@ def exportList():
     else:
         pass
 
-def onClose():
+def checkInventoryListOnClose():
     global inventoryList
     oldInventoryList = []
     areDifferent = False
@@ -352,13 +334,13 @@ addItem_button.grid(row = 5, column = 1)
 delItem_button = Button(mainWindow, text = "Remove Item", command = delItem)
 delItem_button.grid(row = 6, column = 1)
 
-editGL_button = Button(mainWindow, text = "Edit Grocery List", command = switchToGL)
+editGL_button = Button(mainWindow, text = "Edit Grocery List", command = switchToGroceryList)
 editGL_button.grid(row = 9, column = 1)
 
-editIL_button = Button(mainWindow, text = "Edit Inventory List", command = switchToIL)
+editIL_button = Button(mainWindow, text = "Edit Inventory List", command = switchToInventoryList)
 editIL_button.grid(row = 10, column = 1)
 
-editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToRecipe)
+editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToEditRecipe)
 editRecipe_button.grid(row = 11, column = 1)
 
 contextButton = Button(mainWindow, text = "Search For A Recipe", command = switchToSearch)
@@ -400,6 +382,6 @@ modeLabel.config(text = "Mode: Edit Inventory List")
 listLabel.config(text = "Inventory List")
 recipeName = "Custom Recipe" 
 
-mainWindow.protocol("WM_DELETE_WINDOW", onClose)
+mainWindow.protocol("WM_DELETE_WINDOW", checkInventoryListOnClose)
 
 mainWindow.mainloop()
