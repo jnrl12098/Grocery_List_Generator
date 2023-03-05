@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 import os, time
+from utilities import *
+from searchWindow import SearchWindow
 
 mainWindow = Tk()
 
@@ -10,84 +12,55 @@ groceryList = []   # build the grocery list from scratch, append one recipe at a
 inventoryList = []   # used to contain list of ingredients in inventory from text file
 dummyRecipe = []
 recipeName = ""
-searchListMode = 1
-displayedRecipe = []
 narrowedList = []
 recipesList = []
 
 # FUNCTIONS
-# place the contents of a text file into a list
-def fileAsList(filename, list):                      
-    with open(filename, "r") as file:
-        for i in file.readlines():
-            if i[-1] == "\n":
-                list.append(i[slice(0,-1)])                
-            else:
-                list.append(i)
-
 def editItem():
     # only one item should be selected and entrybox is not empty
     global midList
-    if mode == 2:
-        pass
+    if (len(listbox.curselection()) == 1):
+        current = listbox.curselection()    # note this is a tuple containing indices
+        midList.remove(listbox.get(current))
+        midList.insert(current[0], entrybox.get())
+        listbox.delete(current)
+        listbox.insert(current, entrybox.get())
+        listbox.select_clear(0, current)
+        entrybox.delete(0, END)        
     else:
-        if (len(listbox.curselection()) == 1):
-            current = listbox.curselection()    # note this is a tuple containing indices
-            midList.remove(listbox.get(current))
-            midList.insert(current[0], entrybox.get())
-            listbox.delete(current)
-            listbox.insert(current, entrybox.get())
-            listbox.select_clear(0, current)
-            entrybox.delete(0, END)        
-        else:
-            pass
+        pass
 
 def insItem():
     # only one item should be selected and entrybox is not empty
     global midList
-    if mode == 2:
-        pass
-    else:
-        if (len(listbox.curselection()) == 1):
-            belowCurselection = listbox.curselection()[0] + 1    
-            if belowCurselection == listbox.size():
-                midList.append(entrybox.get())
-            else:
-                midList.insert(belowCurselection, entrybox.get())
-            listbox.insert(belowCurselection, entrybox.get())
-            listbox.selection_clear(belowCurselection - 1)
-            listbox.select_set(belowCurselection)
-            entrybox.delete(0, END) 
+    if (len(listbox.curselection()) == 1):
+        belowCurselection = listbox.curselection()[0] + 1    
+        if belowCurselection == listbox.size():
+            midList.append(entrybox.get())
         else:
-            pass
+            midList.insert(belowCurselection, entrybox.get())
+        listbox.insert(belowCurselection, entrybox.get())
+        listbox.selection_clear(belowCurselection - 1)
+        listbox.select_set(belowCurselection)
+        entrybox.delete(0, END) 
+    else:
+        pass
 
 def addItem():
     # add the current text in the entrybox to the bottom of the list and the listbox
     global midList
-    if mode == 2:
-        pass
-    else:
-        midList.append(entrybox.get())
-        listbox.insert(END, entrybox.get())
-        entrybox.delete(0, END)
+    midList.append(entrybox.get())
+    listbox.insert(END, entrybox.get())
+    entrybox.delete(0, END)
 
 def delItem():    
     # removes the selected item from the list and the listbox
     global midList
-    if mode == 2:
-        pass
+    if len(listbox.curselection()) == 1:
+        midList.pop(listbox.curselection()[0])
+        listbox.delete(listbox.curselection())
     else:
-        if len(listbox.curselection()) == 1:
-            midList.pop(listbox.curselection()[0])
-            listbox.delete(listbox.curselection())
-        else:
-            pass
-
-def refreshListbox():
-    global midList
-    listbox.delete(0, END)
-    for i in range(len(midList)):
-        listbox.insert(i, midList[i]) 
+        pass
 
 def backspaceListbox(event):
     if len(listbox.curselection()) == 0:
@@ -128,9 +101,9 @@ def switchToGroceryList():
     if mode == 1:
         pass
     else:
-        if mode == 2 or mode == 3:
+        if mode == 3:
             # reset the Context Button
-            contextButton.configure(text = "Search For A Recipe", command = switchToSearch)
+            contextButton.configure(text = "Search For A Recipe", command = createSearchWindow)
         mode = 1
         midList = groceryList
         refreshListbox()
@@ -144,9 +117,9 @@ def switchToInventoryList():
     if mode == 4:
         pass
     else:
-        if mode == 2 or mode == 3:
+        if mode == 3:
             # reset the Context Button
-            contextButton.configure(text = "Search For A Recipe", command = switchToSearch)
+            contextButton.configure(text = "Search For A Recipe", command = createSearchWindow)
         mode = 4
         midList = inventoryList
         refreshListbox()
@@ -160,9 +133,6 @@ def switchToEditRecipe():
     if mode == 3:
         pass
     else:
-        if mode == 2:
-            # reset the Context Button
-            contextButton.configure(text = "Search For A Recipe", command = switchToSearch)
         mode = 3
         midList = dummyRecipe
         refreshListbox()
@@ -170,76 +140,29 @@ def switchToEditRecipe():
         listLabel.config(text = "Recipe: " + recipeName)
         exportButton.config(text = "Save this Recipe")
 
-# switch to Search For A Recipe mode
-def switchToSearch():
-    global mode, searchListMode
-    if mode == 2:
-        pass
-    else:
-        mode = 2
-        modeLabel.config(text = "Mode: Search for a Recipe")
-        listLabel.config(text = "Search Results: ")
-        entrybox.delete(0, END)
-        listbox.delete(0, END)
-        searchListMode = 0
-        contextButton.config(text = "Filter Search", command = filterSearch)
-
-def contextM2Entry(event):
-    global mode
-    if mode == 2:
-        contextButton.config(text = "Filter Search", command = filterSearch)
-    else: 
-        pass
-
-def filterSearch():
-    global recipesList, midList, narrowedList, searchListMode, displayedRecipe
-    if len(entrybox.get()) == 0:
-        pass
-    else:
-        narrowedList.clear()
-        searchWord = entrybox.get().lower()
-        narrowedList = [i for i in recipesList if i.lower().find(searchWord) != -1]
-        midList = narrowedList
-        refreshListbox()
-        listLabel.config(text = "Search Results for \"" + entrybox.get() + "\"")
-        searchListMode = 1
+def createSearchWindow():
+    if SearchWindow.inactive:
+        searchWindow = SearchWindow(getRecipe)
+        searchWindow.focus_set()
 
 def contextM2List(event):
-    global mode, searchListMode, narrowedList
-    if mode == 2:
-        if searchListMode == 1 and len(narrowedList) != 0:
-            contextButton.config(text = "Display Ingredients", command = displayRecipe)
-        elif searchListMode == 2:
-            contextButton.config(text = "Edit This Recipe", command = editRecipe)
-        else: # likely searchListMode = 0 and there are no valid results
-            contextButton.config(text = "Filter Search")
-    elif mode == 3:
+    global mode, narrowedList
+    if mode == 3:
         contextButton.config(text = "Recipe => GL", command = addRecipeToGroceryList)
         # note, for now this will not let the user search for a recipe during edit reecipe mode
     else:
         pass
 
-def displayRecipe():
-    global recipeName, midList, searchListMode, displayedRecipe
-    if (len(listbox.curselection()) == 0):
-        pass
-    else:
-        recipeName = listbox.get(listbox.curselection())
-        displayedRecipe.clear()
-        fileAsList("Recipes\\" + recipeName + ".txt", displayedRecipe)
-        midList = displayedRecipe
-        listLabel.config(text = "Recipe: " + recipeName)
-        refreshListbox()
-        searchListMode = 2
-
-def editRecipe():
-    global mode, midList, displayedRecipe, dummyRecipe, recipeName
-    # transfer contents of displayedRecipe to dummyRecipe
+def getRecipe(chosenRecipeName, chosenIngredientsList):
+    global recipeName, dummyRecipe
+    recipeName = chosenRecipeName
     dummyRecipe.clear()
-    dummyRecipe = [i for i in displayedRecipe]
+    for i in chosenIngredientsList:
+        dummyRecipe.append(i)
     switchToEditRecipe()
     contextButton.config(text = "Recipe => GL", command = addRecipeToGroceryList)
     entrybox.delete(0, END)
+    mainWindow.focus_set()
 
 def addRecipeToGroceryList():
     global mode, midList, dummyRecipe, groceryList, inventoryList
@@ -343,7 +266,7 @@ editIL_button.grid(row = 10, column = 1)
 editRecipe_button = Button(mainWindow, text = "Edit Current Recipe", command = switchToEditRecipe)
 editRecipe_button.grid(row = 11, column = 1)
 
-contextButton = Button(mainWindow, text = "Search For A Recipe", command = switchToSearch)
+contextButton = Button(mainWindow, text = "Search For A Recipe", command = createSearchWindow)
 contextButton.grid(row = 1, column = 1)
 
 exportButton = Button(mainWindow, text = "Update Inventory List", command = exportList)
@@ -353,7 +276,6 @@ clearSelectionButton = Button(mainWindow, text = "Clear Selection", command = cl
 clearSelectionButton.grid(row = 7, column = 1)
 
 # MOUSE AND KEYBOARD BINDS
-entrybox.bind("<Button-1>", contextM2Entry)
 listbox.bind("<Button-1>", contextM2List)
 
 entrybox.bind("<Return>", lambda event: addItem() if (len(listbox.curselection()) == 0) else insItem())
