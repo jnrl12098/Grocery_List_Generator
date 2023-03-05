@@ -33,6 +33,7 @@ class SearchWindow(Toplevel):
         
         # KEYBINDS
         self.entrybox.bind("<Return>", lambda event: self.filterSearch())
+        self.entrybox.bind("<Control-BackSpace>", lambda event: self.entrybox.delete(0, END))
         self.listbox.bind("<Return>", lambda event: self.displayRecipe())
         self.listbox.bind("<Control-Return>", lambda event: self.chooseRecipe())
 

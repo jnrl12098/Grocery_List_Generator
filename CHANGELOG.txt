@@ -1,3 +1,23 @@
+20230305
+GUI Version 0.10
+* applied object-oriented programming to make the code more organized
+* transfered fileAsList and refreshListbox to a separate python file dedicated to utility functions
+* transfered the search recipe function to a separate class with a dedicated GUI, all found in a separate python file
+	* note: it was a good exercise to use callbacks to transfer data from a class object to any outside variable
+* implemented a "display all recipes" button to the search window
+* implemented keyboard shortcuts to the following windows:
+	* on Search Window:
+		* on Entrybox:
+			* Enter: 			filter search results
+			* Ctrl + BackSpace:	clear the entire entrybox
+		* on Listbox:
+			* Enter:			display the ingredients of the highlighted recipe
+			* Ctrl + Enter: 	choose the highlighted recipe; its contents are copied to the Recipe Tab of the Main Window
+	* on Display Ingredients Window:
+		* Escape: 				closes the window
+* after filtering search results and the listbox is empty, the "display ingredients" and "choose recipe" buttons are disabled;
+	if both buttons are disabled, they are turned back to normal when the listbox is filled with at least one entry
+
 20230303
 GUI Version 0.09
 * refactored editRecipe and addRecipeToGL to use switchToEditRecipe and switchToGroceryList respectively 
