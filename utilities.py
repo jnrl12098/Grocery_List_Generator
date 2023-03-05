@@ -1,0 +1,14 @@
+from tkinter import *
+
+def fileAsList(filename, anyList):                      
+    with open(filename, "r") as file:
+        for i in file.readlines():
+            if i[-1] == "\n":
+                anyList.append(i[slice(0,-1)])                
+            else:
+                anyList.append(i)
+
+def refreshListbox(anyList, anyListbox):
+    anyListbox.delete(0, END)
+    for i in range(len(anyList)):
+        anyListbox.insert(i, anyList[i])
