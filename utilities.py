@@ -1,6 +1,7 @@
 from tkinter import *
 
-def fileAsList(filename, anyList):                      
+def fileAsList(filename, anyList):  
+    anyList.clear()                    
     with open(filename, "r") as file:
         for i in file.readlines():
             if i[-1] == "\n":
