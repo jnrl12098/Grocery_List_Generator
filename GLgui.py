@@ -106,7 +106,7 @@ def switchToGroceryList():
             contextButton.configure(text = "Search For A Recipe", command = createSearchWindow)
         mode = 1
         midList = groceryList
-        refreshListbox()
+        refreshListbox(midList, listbox)
         modeLabel.config(text = "Mode: Edit Grocery List")
         listLabel.config(text = "Grocery List")
         exportButton.config(text = "Export Grocery List")
@@ -122,7 +122,7 @@ def switchToInventoryList():
             contextButton.configure(text = "Search For A Recipe", command = createSearchWindow)
         mode = 4
         midList = inventoryList
-        refreshListbox()
+        refreshListbox(midList, listbox)
         modeLabel.config(text = "Mode: Edit Inventory List")
         listLabel.config(text = "Inventory List")
         exportButton.config(text = "Update Inventory List")
@@ -135,7 +135,7 @@ def switchToEditRecipe():
     else:
         mode = 3
         midList = dummyRecipe
-        refreshListbox()
+        refreshListbox(midList, listbox)
         modeLabel.config(text = "Mode: Edit Recipe")
         listLabel.config(text = "Recipe: " + recipeName)
         exportButton.config(text = "Save this Recipe")
@@ -299,7 +299,7 @@ fileAsList("Inventory.txt", inventoryList)
 # initialize the app with Inventory List Mode to minimize re-edits to the inventory
 mode = 4
 midList = inventoryList
-refreshListbox()
+refreshListbox(midList, listbox)
 modeLabel.config(text = "Mode: Edit Inventory List")
 listLabel.config(text = "Inventory List")
 recipeName = "Custom Recipe" 
