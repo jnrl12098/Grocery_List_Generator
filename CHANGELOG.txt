@@ -1,3 +1,16 @@
+20230306
+progress for GUI Version 0.11
+* OOP was applied to grocery list, inventory, and recipe
+* instead of using buttons to switch between lists and having to refresh the listbox each time, 
+	the lists will now have their own separate tabs
+	* this also means that there is no need to keep a "mode" variable to keep track of the current list on the listbox
+* each list will have its own frame complete with its own entrybox, listbox, and editing buttons	
+	* to streamline this, all of the repetitive components are placed into one class called listTab
+		* the export function will differ, so it will be an abstract method in the listTab class
+* modeLabel has been removed because it felt redundant with listLabel
+	* for listLabel, only the Recipe Tab needs a label for its list
+* the insert and add functions have been combined into one function
+
 20230305
 GUI Version 0.10
 * applied object-oriented programming to make the code more organized
