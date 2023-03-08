@@ -1,3 +1,27 @@
+20230309
+progress for GUI Version 0.11
+* ListTab is almost complete as an abstract class, 
+	but still need to figure out how to bind keyboard events to the frame (self)
+* current way for objects of the same class to form relationships with each other is to use duck-typing:
+	e.g. 
+	class Person():
+		friend = None
+		def __init__(self, name):
+			self.name = name
+	john = Person("John")
+	nelson = Person("Nelson")
+	john.friend = nelson
+	nelson.friend = john
+	print(john.friend.name) # prints "Nelson"
+	print(nelson.friend.name) # prints "John"
+* made classes for each: InventoryTab, GroceryListTab, RecipeTab
+* made SearchWindow exclusive to RecipeTab, 
+	while the other tabs's search button will simply invoke the RecipeTab's search button
+	* this was done by overriding the createSearchWindowFunction, which was decided to be an abstract method
+* tried to use duck-typing and the "friend method" for the RecipeTab to add items to GroceryListTab and to filter
+	items based from GroceryListTab and InventoryTab but it won't achieve the desired effect; 
+	must check if the memory addresses of the concerned objects are used or not	
+
 20230306
 progress for GUI Version 0.11
 * OOP was applied to grocery list, inventory, and recipe
