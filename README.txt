@@ -1,4 +1,4 @@
-Current GUI Version: 0.10
+Current GUI Version: 0.11
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program
@@ -13,7 +13,13 @@ Current GUI Version: 0.10
 
 * keyboard shortcuts:
 	* on Main Window:
-			* Escape:			clear current listbox selection
+			* Escape:			clear highlights from the listbox, if any
+			* Ctrl + s:			save the list of the current tab
+			* Alt 1:			switch to Inventory Tab
+			* Alt 2:			switch to Grocery List Tab
+			* Alt 3:			switch to Recipe Tab
+			* Ctrl + Tab:		switch tabs from left to right
+			* Ctrl + Shift + Tab: switch tabs from right to left
 		* on Entrybox:
 			* Enter:			if no item is selected, add item; else, insert item
 			* Ctrl + Enter: 	edit the highlighted item on the listbox with the contents of the entrybox

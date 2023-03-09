@@ -1,5 +1,7 @@
 20230310
-progress for GUI Version 0.11
+GUI Version 0.11
+* GLguiMainWindow now functions as well as GLgui after implementing checkInventoryListOnClose
+earlier progress for GUI Version 0.11
 * to get around not being able to bind keyboard events to the frame (self), resorted to binding keyboard events
 	to the entrybox and listbox of the frame instead
 * discovered that class attributes between objects of the same parent class may share the same memory address,
