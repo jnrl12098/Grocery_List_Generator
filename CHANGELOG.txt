@@ -1,3 +1,16 @@
+20230310
+progress for GUI Version 0.11
+* to get around not being able to bind keyboard events to the frame (self), resorted to binding keyboard events
+	to the entrybox and listbox of the frame instead
+* discovered that class attributes between objects of the same parent class may share the same memory address,
+	 which could lead to undesired memory shenanigans and unintended infinite loops
+	 * discovered using print(id(object)) and print(id(object.classAttribute))
+	 * groceryListTab and recipeTab may have different memory addresses but 
+	 	groceryListTab.items and recipeTab.items shared the same memory address, which made it impossible to
+		transfer items from recipeTab.items to groceryListTab.items
+* solved the above problem by placing the attribute within the __init__ function, which made the attribute unique
+	to the instanced object; this allows the different ListTabs to transfer items among one another
+
 20230309
 progress for GUI Version 0.11
 * ListTab is almost complete as an abstract class, 
