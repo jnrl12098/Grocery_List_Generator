@@ -27,10 +27,6 @@ def checkInventoryListOnClose(inventoryTab):
     if areDifferent == True:
         response = messagebox.askyesno("Warning!", "You have made changes to the Inventory List.\nDo you want to save these changes before exiting?")
         if response:
-            # fileName = "Inventory.txt"
-            # with open(fileName, "w") as file:
-            #     for i in inventoryTab.items:
-            #         file.write(i + "\n")
             inventoryTab.exportList()
             messagebox.showinfo("File Saved", "The changes have been saved.")
             mainWindow.destroy()

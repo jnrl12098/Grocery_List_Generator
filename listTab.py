@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog
 # from tkinter import ttk
 from searchWindow import SearchWindow
 from abc import ABC, abstractmethod
@@ -141,11 +142,22 @@ class GroceryListTab(ListTab):
 
     def exportList(self):
         dateToday = time.strftime("%Y-%m-%d", time.localtime())
-        fileName = self.listName+ " " + dateToday + ".txt"
-        with open(fileName, "w") as file:
-            for i in self.items:
-                file.write(i + "\n")
-        print("Grocery List has been exported to \"" + fileName + "\"")
+        fileDirectory = "C:\\Users\\jason\\Desktop\\"   # save to Desktop by default
+        fileName = self.listName+ " " + dateToday
+        filePath = filedialog.asksaveasfile(confirmoverwrite = True,
+                                            initialdir = fileDirectory,
+                                            initialfile = fileName,
+                                            defaultextension = ".txt",
+                                            filetypes = [
+                                                ("Text file", ".txt"),
+                                                ("All files", ".*")
+                                            ])
+        if filePath is None:
+            return
+        for i in self.items:
+            filePath.write(i + "\n")
+        print("Grocery List has been exported to \"" + fileName + ".txt\"")
+        filePath.close()
 
 class InventoryTab(ListTab):
     
@@ -178,9 +190,14 @@ class RecipeTab(ListTab):
         self.listLabel.configure(text = self.listName)
         self.exportButton.configure(text = "Save Recipe")
 
+        # ADDITIONAL WIDGETS
         self.addRecipeToGroceryListButton = Button(self, text = "Recipe => Grocery List", command = self.addRecipeToGroceryList)
+        self.resetRecipeButton = Button(self, text = "Build Recipe from Scratch", command = self.resetRecipe)
+        self.renameRecipeButton = Button(self, text = "Rename Recipe", command = self.renameRecipe)
 
         self.addRecipeToGroceryListButton.grid(row = 7, column = 1)
+        self.resetRecipeButton.grid(row = 8, column = 1)
+        self.renameRecipeButton.grid(row = 9, column = 1)
 
     def createSearchWindowFunction(self):
         if SearchWindow.inactive:
@@ -217,52 +234,16 @@ class RecipeTab(ListTab):
         refreshListbox(self.groceryListTab.items, self.groceryListTab.listbox)
         self.notebook.select(1)  # hard-coded; groceryListTab will always be 2nd tab
 
-# def createSearchWindow():
-#     if SearchWindow.inactive:
-#         searchWindow = SearchWindow(getRecipeFunction = getRecipe)
-#         searchWindow.focus_set()
+    def resetRecipe(self):
+        self.listName = "Custom Recipe"
+        self.listLabel.configure(text = self.listName)
+        self.items.clear()
+        self.listbox.delete(0, END)
 
-# def getRecipe(chosenRecipeName, chosenrecipeIngredients):
-#     global recipeName, recipeIngredients
-#     recipeName = chosenRecipeName
-#     recipeIngredients.clear()
-#     for i in chosenrecipeIngredients:
-#         recipeIngredients.append(i)
-#     # decided to use global variables instead of needing to call recipe details from each frame
-
-# def editTabItems(tab, items):
-#     tab.items.clear()
-#     for i in items:
-#         tab.items.append(i)
-#     refreshListbox(tab.items, tab.listbox)
-
-# # MAIN FUNCTION
-# mainWindow = Tk()
-
-# notebook = ttk.Notebook(mainWindow)
-
-# recipeTab = RecipeTab(notebook)
-# inventoryTab = InventoryTab(notebook)
-# groceryListTab = GroceryListTab(notebook)
-
-# recipeTab.inventoryTab = inventoryTab
-# recipeTab.groceryListTab = groceryListTab
-# inventoryTab.recipeTab = recipeTab
-# groceryListTab.recipeTab = recipeTab
-
-# notebook.add(inventoryTab, text = "Inventory List")
-# notebook.add(groceryListTab, text = "Grocery List")
-# notebook.add(recipeTab, text = "Recipe")
-# notebook.pack(expand = True, fill = "both")
-
-# notebook.enable_traversal()
-# mainWindow.bind("<Alt-KeyPress-1>", lambda event: notebook.select(0))
-# mainWindow.bind("<Alt-KeyPress-2>", lambda event: notebook.select(1))
-# mainWindow.bind("<Alt-KeyPress-3>", lambda event: notebook.select(2))
-
-# # initialize the inventoryTab
-# inventoryList = []
-# fileAsList("Inventory.txt", inventoryList)
-# editTabItems(inventoryTab, inventoryList)
-
-# mainWindow.mainloop()
+    def renameRecipe(self):
+        if len(self.entrybox.get()) == 0:
+            self.entrybox.insert(0, "Enter the recipe's name here")
+        else:   
+            self.listName = self.entrybox.get()
+            self.listLabel.configure(text = self.listName)
+            self.entrybox.delete(0, END)

@@ -1,4 +1,12 @@
 20230310
+progress for GUI Version 0.12
+* implemented a save via file dialog feature for exporting grocery list, but it shows an (ignorable) error:
+	" Qt: Untested Windows version 10.0 detected! " 
+	* but it functions fine regardless
+* transferred some of SearchWindow's class attributes to the __init__ function so they do not persist after 
+	the SearchWindow is closed (which causes the list of new instances to append to the list of old instances)
+* added "Reset Recipe" and "Rename Recipe" functions to the recipe tab in case the user would like to make
+	their own custom recipes (named "Custom Recipe" by default)
 GUI Version 0.11
 * GLguiMainWindow now functions as well as GLgui after implementing checkInventoryListOnClose
 earlier progress for GUI Version 0.11
