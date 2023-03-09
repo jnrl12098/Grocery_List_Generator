@@ -1,21 +1,17 @@
 from tkinter import *
-from tkinter import ttk
+# from tkinter import ttk
 from searchWindow import SearchWindow
 from abc import ABC, abstractmethod
 from utilities import *
 import time
 
-recipeName = ""
-recipeIngredients = []
+class ListTab(Frame, ABC):
 
-class ListTab(Frame):
-
-    listName = ""
-    items = []
-    
     def __init__(self):
         super().__init__()
         # WIDGETS
+        self.listName = ""
+        self.items = []
         self.listLabel = Label(self, width = 30, text = self.listName)
         self.entrybox = Entry(self, width = 30)
         self.listbox = Listbox(self, width = 30, height = 20)
@@ -45,9 +41,11 @@ class ListTab(Frame):
         self.listbox.bind("<Delete>", self.deleteKeyListbox)
         self.listbox.bind("<Control-Return>", self.bringToEntrybox)
         self.listbox.bind("<Alt-Return>", lambda event: self.entrybox.focus_set())
-        # TODO figure out how to bind events to the frame!
-        self.bind("<Escape>", lambda event: self.clearListboxSelection())
-        self.bind("<Control-S>", lambda event: self.exportList())
+        # TODO figure out how to bind events to the frame itself!
+        self.entrybox.bind("<Escape>", lambda event: self.clearListboxSelection())
+        self.listbox.bind("<Escape>", lambda event: self.clearListboxSelection())
+        self.entrybox.bind("<Control-s>", lambda event: self.exportList())
+        self.listbox.bind("<Control-s>", lambda event: self.exportList())
 
     def editItem(self):
         if len(self.listbox.curselection()) == 1:
@@ -165,7 +163,7 @@ class InventoryTab(ListTab):
     def exportList(self):
         fileName = "Inventory.txt"
         with open(fileName, "w") as file:
-            for i in inventoryList:
+            for i in self.items:
                 file.write(i + "\n")
         print("The Inventory List Text File has been updated.")
 
@@ -176,6 +174,7 @@ class RecipeTab(ListTab):
     
     def __init__(self, notebook):
         super().__init__()
+        self.notebook = notebook
         self.listName = "Custom Recipe"
         self.listLabel.configure(text = self.listName)
         self.exportButton.configure(text = "Save Recipe")
@@ -198,7 +197,7 @@ class RecipeTab(ListTab):
             self.items.append(i)
         refreshListbox(self.items, self.listbox)
         self.listLabel.configure(text = self.listName)
-        notebook.select(2)  # hard-coded; recipeTab will always be 3rd tab
+        self.notebook.select(2)  # hard-coded; recipeTab will always be 3rd tab
         self.focus_set()
 
     def exportList(self):
@@ -217,7 +216,7 @@ class RecipeTab(ListTab):
             if (i not in self.groceryListTab.items) and (i not in self.inventoryTab.items):
                 self.groceryListTab.items.append(i)
         refreshListbox(self.groceryListTab.items, self.groceryListTab.listbox)
-        notebook.select(1)
+        self.notebook.select(1)  # hard-coded; groceryListTab will always be 2nd tab
 
 # def createSearchWindow():
 #     if SearchWindow.inactive:
@@ -232,38 +231,39 @@ class RecipeTab(ListTab):
 #         recipeIngredients.append(i)
 #     # decided to use global variables instead of needing to call recipe details from each frame
 
-def editTabItems(tab, items):
-    tab.items.clear()
-    for i in items:
-        tab.items.append(i)
-    refreshListbox(tab.items, tab.listbox)
+# def editTabItems(tab, items):
+#     tab.items.clear()
+#     for i in items:
+#         tab.items.append(i)
+#     refreshListbox(tab.items, tab.listbox)
 
-# MAIN FUNCTION
-mainWindow = Tk()
+# # MAIN FUNCTION
+# mainWindow = Tk()
 
-notebook = ttk.Notebook(mainWindow)
+# notebook = ttk.Notebook(mainWindow)
 
-# inventoryTab = ListTab(notebook, createSearchWindow)
-# groceryListTab = ListTab(notebook, createSearchWindow)
-# recipeTab = ListTab(notebook, createSearchWindow)
+# recipeTab = RecipeTab(notebook)
+# inventoryTab = InventoryTab(notebook)
+# groceryListTab = GroceryListTab(notebook)
 
-recipeTab = RecipeTab(notebook)
-inventoryTab = InventoryTab(notebook)
-groceryListTab = GroceryListTab(notebook)
+# recipeTab.inventoryTab = inventoryTab
+# recipeTab.groceryListTab = groceryListTab
+# inventoryTab.recipeTab = recipeTab
+# groceryListTab.recipeTab = recipeTab
 
-recipeTab.inventoryTab = inventoryTab
-recipeTab.groceryListTab = groceryListTab
-inventoryTab.recipeTab = recipeTab
-groceryListTab.recipeTab = recipeTab
+# notebook.add(inventoryTab, text = "Inventory List")
+# notebook.add(groceryListTab, text = "Grocery List")
+# notebook.add(recipeTab, text = "Recipe")
+# notebook.pack(expand = True, fill = "both")
 
-notebook.add(inventoryTab, text = "Inventory List")
-notebook.add(groceryListTab, text = "Grocery List")
-notebook.add(recipeTab, text = "Recipe")
-notebook.pack(expand = True, fill = "both")
+# notebook.enable_traversal()
+# mainWindow.bind("<Alt-KeyPress-1>", lambda event: notebook.select(0))
+# mainWindow.bind("<Alt-KeyPress-2>", lambda event: notebook.select(1))
+# mainWindow.bind("<Alt-KeyPress-3>", lambda event: notebook.select(2))
 
-# initialize the inventoryTab
-inventoryList = []
-fileAsList("Inventory.txt", inventoryList)
-editTabItems(inventoryTab, inventoryList)
+# # initialize the inventoryTab
+# inventoryList = []
+# fileAsList("Inventory.txt", inventoryList)
+# editTabItems(inventoryTab, inventoryList)
 
-mainWindow.mainloop()
+# mainWindow.mainloop()
