@@ -1,18 +1,7 @@
 [Meat]
-Chicken Drumsticks
-Boneless Bangus
-Tuna Belly
-Matambaka
-Pork Ginisa Cut
-Tangigue
+Pork Steak
 
 [Vegetables]
-Cabbage
-Carrots
-Tomatoes
-Spring Onion
-Chili Leaves
-Karlang
 
 [Sauces]
 Barbeque Marinade
@@ -36,9 +25,6 @@ Salt
 Black Pepper (Fine)
 Black Pepper (Coarse)
 Chili Powder
-Garlic
-Red Onion
-Ginger
 MAGGI Magic Sarap
 KNORR Chicken Cube
 KNORR Pork Cube

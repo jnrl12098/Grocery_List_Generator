@@ -5,10 +5,6 @@ from utilities import *
 class SearchWindow(Toplevel):
     
     inactive = True
-    # recipeName = ""
-    # recipesList = []
-    # narrowedRecipesList = []
-    # recipeIngredients = []
     
     def __init__(self, listTab = None, getRecipeFunction = None):
         super().__init__()
@@ -108,7 +104,8 @@ class SearchWindow(Toplevel):
         else:
             self.recipeName = self.listbox.get(self.listbox.curselection())
             fileAsList("Recipes\\" + self.recipeName + ".txt", self.recipeIngredients)
-            self.getRecipeFunction(self.listTab, self.recipeName, self.recipeIngredients)
+            # self.getRecipeFunction(self.listTab, self.recipeName, self.recipeIngredients)
+            self.getRecipeFunction(self.recipeName, self.recipeIngredients)
     
     def closeSearchWindow(self):
         self.__class__.inactive = True
