@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import os
 from utilities import *
 
@@ -21,6 +22,7 @@ class SearchWindow(Toplevel):
         self.displayRecipeButton = Button(self, text = "Display Ingredients", command = self.displayRecipe)
         self.displayAllRecipesButton = Button(self, text = "Display All Recipes", command = self.displayAllRecipes)
         self.chooseRecipeButton = Button(self, text = "Choose this Recipe", command = self.chooseRecipe)
+        self.deleteRecipeButton = Button(self, text = "Delete this Recipe", command = self.deleteRecipe)
 
         # WIDGET LOCATIONS
         self.entrybox.grid(row = 0, column = 0)
@@ -30,6 +32,7 @@ class SearchWindow(Toplevel):
         self.displayRecipeButton.grid(row = 2, column = 1)
         self.displayAllRecipesButton.grid(row = 3, column = 1)
         self.chooseRecipeButton.grid(row = 4, column = 1)
+        self.deleteRecipeButton.grid(row = 6, column = 1)
         # TODO improve style
         
         # KEYBINDS
@@ -105,7 +108,19 @@ class SearchWindow(Toplevel):
             self.recipeName = self.listbox.get(self.listbox.curselection())
             fileAsList("Recipes\\" + self.recipeName + ".txt", self.recipeIngredients)
             self.getRecipeFunction(self.recipeName, self.recipeIngredients)
-    
+
+    def deleteRecipe(self):
+        if len(self.listbox.curselection()) == 1:
+            fileName = self.listbox.get(self.listbox.curselection())
+            response = messagebox.askyesno("Warning!", "Are you sure you want to delete " + fileName + "?")
+            if response:
+                filePath = "Recipes\\" + fileName + ".txt"
+                os.remove(filePath)
+                self.recipesList.pop(self.listbox.curselection()[0])
+                self.listbox.delete(self.listbox.curselection())
+        else:
+            pass
+            
     def closeSearchWindow(self):
         self.__class__.inactive = True
         self.destroy()

@@ -1,4 +1,6 @@
 20230406
+GUI Version 0.14
+* allowed the user to delete recipes using the Search Window
 GUI Version 0.13
 * implemented a save via file dialog feature for saving custom recipes
 * an info box pops up to confirm that a grocery list or a recipe was saved successfully
