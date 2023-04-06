@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 # from tkinter import ttk
 from searchWindow import SearchWindow
 from abc import ABC, abstractmethod
@@ -143,7 +143,7 @@ class GroceryListTab(ListTab):
     def exportList(self):
         dateToday = time.strftime("%Y-%m-%d", time.localtime())
         fileDirectory = "C:\\Users\\jason\\Desktop\\"   # save to Desktop by default
-        fileName = self.listName+ " " + dateToday
+        fileName = self.listName + " " + dateToday
         filePath = filedialog.asksaveasfile(confirmoverwrite = True,
                                             initialdir = fileDirectory,
                                             initialfile = fileName,
@@ -154,10 +154,12 @@ class GroceryListTab(ListTab):
                                             ])
         if filePath is None:
             return
-        for i in self.items:
-            filePath.write(i + "\n")
-        print("Grocery List has been exported to \"" + fileName + ".txt\"")
-        filePath.close()
+        else:
+            for i in self.items:
+                filePath.write(i + "\n")
+            filePath.close()
+            messagebox.showinfo(title = "Information", message = "Grocery List has been exported.")
+            # print("Grocery List has been exported to \"" + fileName + ".txt\"")
 
 class InventoryTab(ListTab):
     
@@ -218,14 +220,24 @@ class RecipeTab(ListTab):
 
     def exportList(self):
         dateToday = time.strftime("%Y-%m-%d", time.localtime())
-        if len(self.entrybox.get()) == 0:
-            self.entrybox.insert(0, "Enter recipe name here")
+        fileDirectory = "Recipes\\"   # save to Recipes folder
+        fileName = self.listName + " " + dateToday
+        filePath = filedialog.asksaveasfile(confirmoverwrite = True,
+                                            initialdir = fileDirectory,
+                                            initialfile = fileName,
+                                            defaultextension = ".txt",
+                                            filetypes = [
+                                                ("Text file", ".txt"),
+                                                ("All files", ".*")
+                                            ])
+        if filePath is None:
+            return
         else:
-            fileName = self.entrybox.get() + " " + dateToday + ".txt"
-            with open("Recipes\\" + fileName, "w") as file:
-                for i in self.items:
-                    file.write(i + "\n")
-            print("This recipe has been exported to \"Recipes/" + fileName + "\"")
+            for i in self.items:
+                filePath.write(i + "\n")
+            filePath.close()
+            messagebox.showinfo(title = "Information", message = "The recipe was saved.")
+            # print("This recipe has been exported to \"Recipes/" + fileName + "\"")
 
     def addRecipeToGroceryList(self):
         for i in self.items:

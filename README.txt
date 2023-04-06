@@ -1,4 +1,4 @@
-Current GUI Version: 0.12
+Current GUI Version: 0.13
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program
@@ -10,9 +10,7 @@ Current GUI Version: 0.12
 		that are still present in the inventory and already present in the grocery list
 
 * NEW Quality of Life (but necessary) update:
-	* Inventory, Grocery List, Recipe now each have their own class and tab
-		* this makes switching between tabs much easier (check new shortcuts below)
-	* RecipeTab now makes it easier for users to input their own recipes
+	* user can now export grocery lists and save recipes under any file name and in any folder they choose
 
 * keyboard shortcuts:
 	* on Main Window:

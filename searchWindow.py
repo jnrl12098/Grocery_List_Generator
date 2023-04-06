@@ -104,7 +104,6 @@ class SearchWindow(Toplevel):
         else:
             self.recipeName = self.listbox.get(self.listbox.curselection())
             fileAsList("Recipes\\" + self.recipeName + ".txt", self.recipeIngredients)
-            # self.getRecipeFunction(self.listTab, self.recipeName, self.recipeIngredients)
             self.getRecipeFunction(self.recipeName, self.recipeIngredients)
     
     def closeSearchWindow(self):
