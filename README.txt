@@ -1,4 +1,4 @@
-Current GUI Version: 0.14
+Current GUI Version: 0.15
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program
@@ -12,6 +12,10 @@ Current GUI Version: 0.14
 * NEW Quality of Life (but necessary) update:
 	* user can now export grocery lists and save recipes under any file name and in any folder they choose
 	* user can now delete recipes using the Search Window
+		* the user is given time to confirm whether or not they wish to delete the recipe
+	* user can now rename recipes using the Search Window
+		* the user is given time to confirm whether or not they wish to rename the recipe
+		* a warning pops up when the entered name was already taken
 
 * keyboard shortcuts:
 	* on Main Window:

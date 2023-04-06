@@ -1,4 +1,7 @@
 20230406
+GUI Version 0.15
+* allowed the user to rename recipes using the Search Window
+	* a warning pops up when the entered name was already taken
 GUI Version 0.14
 * allowed the user to delete recipes using the Search Window
 * an info box pops up to confirm if changes to the inventory were saved

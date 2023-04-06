@@ -23,6 +23,7 @@ class SearchWindow(Toplevel):
         self.displayAllRecipesButton = Button(self, text = "Display All Recipes", command = self.displayAllRecipes)
         self.chooseRecipeButton = Button(self, text = "Choose this Recipe", command = self.chooseRecipe)
         self.deleteRecipeButton = Button(self, text = "Delete this Recipe", command = self.deleteRecipe)
+        self.renameRecipeButton = Button(self, text = "Rename this Recipe", command = self.renameRecipe)
 
         # WIDGET LOCATIONS
         self.entrybox.grid(row = 0, column = 0)
@@ -33,6 +34,7 @@ class SearchWindow(Toplevel):
         self.displayAllRecipesButton.grid(row = 3, column = 1)
         self.chooseRecipeButton.grid(row = 4, column = 1)
         self.deleteRecipeButton.grid(row = 6, column = 1)
+        self.renameRecipeButton.grid(row = 7, column = 1)
         # TODO improve style
         
         # KEYBINDS
@@ -120,6 +122,32 @@ class SearchWindow(Toplevel):
                 self.listbox.delete(self.listbox.curselection())
         else:
             pass
+
+    def renameRecipe(self):
+        if len(self.listbox.curselection()) == 1:
+            if len(self.entrybox.get()) == 0:
+                self.entrybox.insert(0, "Enter the recipe's new name here")
+            else:
+                newFileName = self.entrybox.get()
+                if newFileName in self.recipesList: # TODO convert to try/except
+                    messagebox.showwarning(title = "Warning!", message = "A recipe with this name already exists.")
+                else:
+                    fileName = self.listbox.get(self.listbox.curselection())
+                    response = messagebox.askyesno("Warning!", "Are you sure you want to rename " + fileName + "?")
+                    if response:
+                        current = self.listbox.curselection()   # a tuple
+                        filePath = "Recipes\\" + fileName + ".txt"
+                        newFilePath = "Recipes\\" + newFileName + ".txt"
+                        os.rename(filePath, newFilePath)
+                        self.recipesList.pop(current[0])
+                        self.recipesList.insert(current[0], newFileName)
+                        self.listbox.delete(current)
+                        self.listbox.insert(current, newFileName)
+                        self.listbox.select_clear(current)
+                        self.entrybox.delete(0,END)
+        else:
+            pass
+
             
     def closeSearchWindow(self):
         self.__class__.inactive = True
