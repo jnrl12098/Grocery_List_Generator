@@ -71,9 +71,13 @@ class SearchWindow(Toplevel):
             if len(self.narrowedRecipesList) == 0:
                 self.displayRecipeButton["state"] = DISABLED
                 self.chooseRecipeButton["state"] = DISABLED
+                self.deleteRecipeButton["state"] = DISABLED
+                self.renameRecipeButton["state"] = DISABLED
             else:
                 self.displayRecipeButton["state"] = NORMAL
                 self.chooseRecipeButton["state"] = NORMAL
+                self.deleteRecipeButton["state"] = NORMAL
+                self.renameRecipeButton["state"] = NORMAL
 
     def displayRecipe(self):
         if len(self.listbox.curselection()) == 0:
@@ -90,6 +94,10 @@ class SearchWindow(Toplevel):
                 self.displayRecipeButton["state"] = NORMAL
             if self.chooseRecipeButton["state"] == DISABLED:
                 self.chooseRecipeButton["state"] = NORMAL
+            if self.deleteRecipeButton["state"] == DISABLED:
+                self.deleteRecipeButton["state"] = NORMAL
+            if self.renameRecipeButton["state"] == DISABLED:
+                self.renameRecipeButton["state"] = NORMAL
         else:
             pass
 
