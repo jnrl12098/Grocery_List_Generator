@@ -51,7 +51,7 @@ class ListTab(Frame, ABC):
     def editItem(self):
         if len(self.listbox.curselection()) == 1:
             current = self.listbox.curselection()   # note: this is a tuple
-            self.items.remove(self.listbox.get(current))
+            self.items.pop(current[0])
             self.items.insert(current[0], self.entrybox.get())
             self.listbox.delete(current)
             self.listbox.insert(current, self.entrybox.get())
