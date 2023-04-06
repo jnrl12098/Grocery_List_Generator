@@ -179,6 +179,7 @@ class InventoryTab(ListTab):
         with open(fileName, "w") as file:
             for i in self.items:
                 file.write(i + "\n")
+        messagebox.showinfo("File Saved", "The Inventory List was updated.")
 
 class RecipeTab(ListTab):
 
