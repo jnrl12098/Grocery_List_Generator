@@ -15,7 +15,8 @@ def checkInventoryListOnClose(inventoryTab):
     areDifferent = False
     # side effect: if the user has already saved right before exiting, all the checks below will return areDifferent = False
     fileAsList("Inventory.txt", oldInventory) 
-    # compare oldInventoryList and inventoryList; consider unchanged if and only if: same size, same order, same items
+    # compare oldInventoryList and inventoryList; 
+    # consider unchanged if and only if: same size, same order, same items
     if len(inventoryTab.items) == len(oldInventory):
         for i in range(len(inventoryTab.items)):
             if inventoryTab.items[i] != oldInventory[i]:
@@ -29,11 +30,8 @@ def checkInventoryListOnClose(inventoryTab):
         if response:
             inventoryTab.exportList()
             messagebox.showinfo("File Saved", "The changes have been saved.")
-            mainWindow.destroy()
-        else:
-            mainWindow.destroy()
-    else:
-        mainWindow.destroy()
+
+    mainWindow.destroy()
 
 # MAIN FUNCTION
 mainWindow = Tk()
