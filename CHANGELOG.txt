@@ -1,3 +1,8 @@
+20220407
+GUI Version 0.16
+* the file "Inventory.txt" is written along with basic categories if the file does not exist
+	* categories: meat, vegetables, sauces, seasonings & spices, dairy & poultry, fruits
+
 20230406
 GUI Version 0.15
 * allowed the user to rename recipes using the Search Window

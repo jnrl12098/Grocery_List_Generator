@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from utilities import *
+import os
 
 def editTabItems(tab, items):
     tab.items.clear()
@@ -59,6 +60,11 @@ mainWindow.bind("<Alt-KeyPress-3>", lambda event: notebook.select(2))
 
 # initialize the inventoryTab
 inventoryList = []
+if not os.path.exists("Inventory.txt"):
+    inventoryCategories = ["[MEAT]", "[VEGETABLES]", "[SAUCES]", "[SEASONINGS, SPICES]", "[DAIRY, POULTRY]", "[FRUITS]"]
+    with open("Inventory.txt", "w") as file:
+        for category in inventoryCategories:
+            file.write(category + "\n\n")
 fileAsList("Inventory.txt", inventoryList)
 editTabItems(inventoryTab, inventoryList)
 

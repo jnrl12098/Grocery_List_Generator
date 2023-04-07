@@ -1,4 +1,4 @@
-Current GUI Version: 0.15
+Current GUI Version: 0.16
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program
@@ -10,22 +10,18 @@ Current GUI Version: 0.15
 		that are still present in the inventory and already present in the grocery list
 
 * NEW Quality of Life (but necessary) update:
-	* user can now export grocery lists and save recipes under any file name and in any folder they choose
-	* user can now delete recipes using the Search Window
-		* the user is given time to confirm whether or not they wish to delete the recipe
-	* user can now rename recipes using the Search Window
-		* the user is given time to confirm whether or not they wish to rename the recipe
-		* a warning pops up when the entered name was already taken
+	* the file "Inventory.txt" is written along with basic categories if the file does not exist
+		* categories: meat, vegetables, sauces, seasonings & spices, dairy & poultry, fruits
 
 * keyboard shortcuts:
 	* on Main Window:
 			* Escape:			clear highlights from the listbox, if any
-			NEW * Ctrl + s:			save the list of the current tab
-			NEW * Alt 1:			switch to Inventory Tab
-			NEW * Alt 2:			switch to Grocery List Tab
-			NEW * Alt 3:			switch to Recipe Tab
-			NEW * Ctrl + Tab:		switch tabs from left to right
-			NEW * Ctrl + Shift + Tab: switch tabs from right to left
+			* Ctrl + s:			save the list of the current tab
+			* Alt 1:			switch to Inventory Tab
+			* Alt 2:			switch to Grocery List Tab
+			* Alt 3:			switch to Recipe Tab
+			* Ctrl + Tab:		switch tabs from left to right
+			* Ctrl + Shift + Tab: switch tabs from right to left
 		* on Entrybox:
 			* Enter:			if no item is selected, add item; else, insert item
 			* Ctrl + Enter: 	edit the highlighted item on the listbox with the contents of the entrybox
