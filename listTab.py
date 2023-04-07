@@ -207,9 +207,11 @@ class RecipeTab(ListTab):
     def createSearchWindowFunction(self):
         if SearchWindow.inactive:
             self.searchWindow = SearchWindow(getRecipeFunction = self.getRecipe)
-            self.searchWindow.focus_set()
-        else:
-            self.searchWindow.focus_set()
+        # elif SearchWindow.changed:
+        #     self.searchWindow.destroy()
+        #     self.searchWindow = SearchWindow(getRecipeFunction = self.getRecipe)
+        #     SearchWindow.changed = False
+        self.searchWindow.focus_set()
 
     def getRecipe(self, chosenRecipeName, chosenrecipeIngredients):
         self.listName = chosenRecipeName
@@ -240,6 +242,9 @@ class RecipeTab(ListTab):
                 filePath.write(i + "\n")
             filePath.close()
             messagebox.showinfo(title = "Information", message = "The recipe was saved.")
+            if not SearchWindow.inactive:
+                self.searchWindow.destroy()
+                self.searchWindow = SearchWindow(getRecipeFunction = self.getRecipe)
             # print("This recipe has been exported to \"Recipes/" + fileName + "\"")
 
     def addRecipeToGroceryList(self):

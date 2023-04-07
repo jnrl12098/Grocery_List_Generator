@@ -10,8 +10,7 @@ Current GUI Version: 0.17
 		that are still present in the inventory and already present in the grocery list
 
 * NEW Quality of Life (but necessary) update:
-	* the file "Inventory.txt" is written along with basic categories if the file does not exist
-		* categories: meat, vegetables, sauces, seasonings & spices, dairy & poultry, fruits
+	* if the user saves a new recipe, it is instantly reflected in the search recipe window if that window is already open
 
 * keyboard shortcuts:
 	* on Main Window:

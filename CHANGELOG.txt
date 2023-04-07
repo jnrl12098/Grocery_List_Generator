@@ -1,5 +1,7 @@
 20220407
 GUI Version 0.17
+* implemented a feature where, if changes were made to the list of recipes (i.e. added/deleted/renamed a recipe) and the search recipe window was already open,
+	then the search recipe window is reloaded
 * implemented new keyboard shortcut on listTab:
 	* ctrl + f:	open search (find) recipe window
 GUI Version 0.16
