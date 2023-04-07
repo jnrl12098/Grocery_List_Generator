@@ -11,6 +11,10 @@ Current GUI Version: 0.17
 
 * NEW Quality of Life (but necessary) update:
 	* if the user saves a new recipe, it is instantly reflected in the search recipe window if that window is already open
+	* the user may undo the following actions:
+		* edit, insert, delete item;
+		* choosing a recipe and adding its items to the recipe tab
+		* adding items of a recipe to the grocery list
 
 * keyboard shortcuts:
 	* on Main Window:
@@ -22,6 +26,7 @@ Current GUI Version: 0.17
 			* Alt 3:			switch to Recipe Tab
 			* Ctrl + Tab:		switch tabs from left to right
 			* Ctrl + Shift + Tab: switch tabs from right to left
+			NEW * Ctrl + z		revert a list to its previous state (effectively functions as Undo)
 		* on Entrybox:
 			* Enter:			if no item is selected, add item; else, insert item
 			* Ctrl + Enter: 	edit the highlighted item on the listbox with the contents of the entrybox

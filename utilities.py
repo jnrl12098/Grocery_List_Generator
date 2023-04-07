@@ -13,3 +13,8 @@ def refreshListbox(anyList, anyListbox):
     anyListbox.delete(0, END)
     for i in range(len(anyList)):
         anyListbox.insert(i, anyList[i])
+
+def copyList(sourceList, destinationList):
+    destinationList.clear()
+    for i in sourceList:
+        destinationList.append(i)

@@ -13,6 +13,7 @@ class ListTab(Frame, ABC):
         # WIDGETS
         self.listName = ""
         self.items = []
+        self.oldItems = []
         self.listLabel = Label(self, width = 30, text = self.listName)
         self.entrybox = Entry(self, width = 30)
         self.listbox = Listbox(self, width = 30, height = 20)
@@ -49,37 +50,51 @@ class ListTab(Frame, ABC):
         self.listbox.bind("<Control-s>", lambda event: self.exportList())
         self.entrybox.bind("<Control-f>", lambda event: self.createSearchWindowFunction())
         self.listbox.bind("<Control-f>", lambda event: self.createSearchWindowFunction())
+        self.entrybox.bind("<Control-z>", self.undo)
+        self.listbox.bind("<Control-z>", self.undo)
+
+    def undo(self, event):
+        middleList = []
+        copyList(self.items, middleList)
+        copyList(self.oldItems, self.items)
+        copyList(middleList, self.oldItems)
+        refreshListbox(self.items, self.listbox)
 
     def editItem(self):
         if len(self.listbox.curselection()) == 1:
+            copyList(self.items, self.oldItems)
+            item = self.entrybox.get()
+            self.entrybox.delete(0, END)
             current = self.listbox.curselection()   # note: this is a tuple
             self.items.pop(current[0])
-            self.items.insert(current[0], self.entrybox.get())
+            self.items.insert(current[0], item)
             self.listbox.delete(current)
-            self.listbox.insert(current, self.entrybox.get())
+            self.listbox.insert(current, item)
             self.listbox.select_clear(current)
-            self.entrybox.delete(0, END)
         else:
             pass
 
     def insertItem(self):
+        copyList(self.items, self.oldItems)
+        item = self.entrybox.get()
         if len(self.listbox.curselection()) == 1:
             # insert the input BELOW the highlighted item, 
             # then transfer the highlight to the input
             belowCurselection = self.listbox.curselection()[0] + 1
             if belowCurselection == self.listbox.size():
-                self.items.append(self.entrybox.get())
+                self.items.append(item)
             else:
-                self.items.insert(belowCurselection, self.entrybox.get())
-            self.listbox.insert(belowCurselection, self.entrybox.get())
+                self.items.insert(belowCurselection, item)
+            self.listbox.insert(belowCurselection, item)
             self.listbox.selection_clear(belowCurselection - 1)
             self.listbox.select_set(belowCurselection)
         else:
-            self.items.append(self.entrybox.get())
-            self.listbox.insert(END, self.entrybox.get())
+            self.items.append(item)
+            self.listbox.insert(END, item)
         self.entrybox.delete(0, END)
 
-    def deleteItem(self):
+    def deleteItem(self):        
+        copyList(self.items, self.oldItems)
         if len(self.listbox.curselection()) == 1:
             self.items.pop(self.listbox.curselection()[0])
             self.listbox.delete(self.listbox.curselection())
@@ -214,6 +229,7 @@ class RecipeTab(ListTab):
         self.searchWindow.focus_set()
 
     def getRecipe(self, chosenRecipeName, chosenrecipeIngredients):
+        copyList(self.items, self.oldItems)
         self.listName = chosenRecipeName
         self.items.clear()
         for i in chosenrecipeIngredients:
@@ -248,6 +264,7 @@ class RecipeTab(ListTab):
             # print("This recipe has been exported to \"Recipes/" + fileName + "\"")
 
     def addRecipeToGroceryList(self):
+        copyList(self.groceryListTab.items, self.groceryListTab.oldItems)
         for i in self.items:
             if (i not in self.groceryListTab.items) and (i not in self.inventoryTab.items):
                 self.groceryListTab.items.append(i)
@@ -255,6 +272,7 @@ class RecipeTab(ListTab):
         self.notebook.select(1)  # hard-coded; groceryListTab will always be 2nd tab
 
     def resetRecipe(self):
+        copyList(self.items, self.oldItems)
         self.listName = "Custom Recipe"
         self.listLabel.configure(text = self.listName)
         self.items.clear()
