@@ -1,4 +1,4 @@
-Current GUI Version: 0.16
+Current GUI Version: 0.17
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program
@@ -17,6 +17,7 @@ Current GUI Version: 0.16
 	* on Main Window:
 			* Escape:			clear highlights from the listbox, if any
 			* Ctrl + s:			save the list of the current tab
+			NEW * Ctrl + f		open Search (or Find) Recipe Window
 			* Alt 1:			switch to Inventory Tab
 			* Alt 2:			switch to Grocery List Tab
 			* Alt 3:			switch to Recipe Tab

@@ -1,4 +1,7 @@
 20220407
+GUI Version 0.17
+* implemented new keyboard shortcut on listTab:
+	* ctrl + f:	open search (find) recipe window
 GUI Version 0.16
 * the file "Inventory.txt" is written along with basic categories if the file does not exist
 	* categories: meat, vegetables, sauces, seasonings & spices, dairy & poultry, fruits

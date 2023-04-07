@@ -47,6 +47,8 @@ class ListTab(Frame, ABC):
         self.listbox.bind("<Escape>", lambda event: self.clearListboxSelection())
         self.entrybox.bind("<Control-s>", lambda event: self.exportList())
         self.listbox.bind("<Control-s>", lambda event: self.exportList())
+        self.entrybox.bind("<Control-f>", lambda event: self.createSearchWindowFunction())
+        self.listbox.bind("<Control-f>", lambda event: self.createSearchWindowFunction())
 
     def editItem(self):
         if len(self.listbox.curselection()) == 1:
