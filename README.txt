@@ -1,4 +1,4 @@
-Current GUI Version: 0.17
+Current GUI Version: 0.19
 * functional enough to deliver the minimum expected features:
 	* create a grocery list from scratch with Edit, Insert, Add, Remove
 	* edit and update (export) an inventory of ingredients; data persists after closing the program

@@ -1,3 +1,9 @@
+20220416
+GUI Version 0.19
+* changed the Insert Item Function to insert ABOVE the highlighted item instead of BELOW (seems to be more intuitive this way)
+	* the user can still add an item at the bottom of the list by entering an item but without any items on the list highlighted
+* removed redundant messagebox that pops up when exiting the program but the inventory list hasn't been saved, and the user confirms to save the latest inventory list
+
 20220407
 GUI Version 0.18
 * implemented a primitive undo feature similar to the undo feature of notepad.exe but uses "screenshots" of the lists to achieve this effect

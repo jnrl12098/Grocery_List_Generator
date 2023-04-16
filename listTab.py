@@ -54,10 +54,10 @@ class ListTab(Frame, ABC):
         self.listbox.bind("<Control-z>", self.undo)
 
     def undo(self, event):
-        middleList = []
-        copyList(self.items, middleList)
+        bufferList = []
+        copyList(self.items, bufferList)
         copyList(self.oldItems, self.items)
-        copyList(middleList, self.oldItems)
+        copyList(bufferList, self.oldItems)
         refreshListbox(self.items, self.listbox)
 
     def editItem(self):
@@ -78,17 +78,19 @@ class ListTab(Frame, ABC):
         copyList(self.items, self.oldItems)
         item = self.entrybox.get()
         if len(self.listbox.curselection()) == 1:
-            # insert the input BELOW the highlighted item, 
-            # then transfer the highlight to the input
-            belowCurselection = self.listbox.curselection()[0] + 1
-            if belowCurselection == self.listbox.size():
-                self.items.append(item)
-            else:
-                self.items.insert(belowCurselection, item)
-            self.listbox.insert(belowCurselection, item)
-            self.listbox.selection_clear(belowCurselection - 1)
+            # insert the new item ABOVE the highlighted item, then transfer the highlight to the new item
+            curselection = self.listbox.curselection()[0]
+            belowCurselection = curselection + 1
+            # if belowCurselection == self.listbox.size():
+            #     self.items.append(item)
+            #     self.listbox.insert(END, item)
+            # else:
+            self.items.insert(curselection, item)
+            self.listbox.insert(curselection, item)
+            self.listbox.selection_clear(curselection)
             self.listbox.select_set(belowCurselection)
         else:
+            # this allows inserting items below the last item
             self.items.append(item)
             self.listbox.insert(END, item)
         self.entrybox.delete(0, END)
