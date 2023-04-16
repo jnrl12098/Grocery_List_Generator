@@ -30,7 +30,6 @@ def checkInventoryListOnClose(inventoryTab):
         response = messagebox.askyesno("Warning!", "You have made changes to the Inventory List.\nDo you want to save these changes before exiting?")
         if response:
             inventoryTab.exportList()
-            messagebox.showinfo("File Saved", "The changes have been saved.")
 
     mainWindow.destroy()
 
